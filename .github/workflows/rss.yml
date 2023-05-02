@@ -1,0 +1,39 @@
+name: Update RSS
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+      - name: Setup directory
+        run: mkdir rss
+      - name: Download RSS (SHIMOKITA COLLEGE)
+        run: curl -sL "https://script.google.com/macros/s/AKfycbxD78Y1bL_4QDJ3jMhIkCpdlCrty8q5LMIoVegvUc2_mGGxnHKAODk41VkjwCzJ/exec?type=shimokita" > rss/shimokita-college-instagram.xml
+      - name: Download RSS (Relax)
+        run: curl -sL "https://script.google.com/macros/s/AKfycbxD78Y1bL_4QDJ3jMhIkCpdlCrty8q5LMIoVegvUc2_mGGxnHKAODk41VkjwCzJ/exec?type=relax" > rss/relax-instagram.xml
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
