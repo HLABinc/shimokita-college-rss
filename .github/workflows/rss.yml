@@ -24,6 +24,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v1
+      - name: Setup Directory
+        run: mkdir -p rss
       - name: Download RSS (SHIMOKITA COLLEGE)
         run: curl -sL "${{ vars.RSS_URL }}?type=shimokita" > rss/shimokita-college-instagram.xml
       - name: Download RSS (Relax)
