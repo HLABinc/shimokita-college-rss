@@ -1,10 +1,10 @@
 name: Update RSS
 
 on:
-  push:
-    branches: ["main"]
+  schedule:
+    - cron: '30 0-23 * * *'
   workflow_dispatch:
-
+  
 permissions:
   contents: read
   pages: write
